@@ -2,6 +2,7 @@ import scrapy
 from scrapy import Request
 from WebCrawler.items import ReviewsBoursoramaItem
 from datetime import datetime
+import mysql.connector as mc
 
 class BoursoramaSpider(scrapy.Spider):
     name = 'boursorama'
@@ -21,7 +22,7 @@ class BoursoramaSpider(scrapy.Spider):
             print(indices)
             # Indice boursier
             try:
-                item['indice'] = indices.css('a.c-link::text').get()
+                item['indice'] = indices.css('a.c-link::text').extract()
             except:
                 item['indice'] = 'None'
             # Indice cours de l'action
@@ -55,5 +56,7 @@ class BoursoramaSpider(scrapy.Spider):
               item['time'] = datetime.now()
             except:
               item['time'] = 'None'
+
+
 
             yield item
